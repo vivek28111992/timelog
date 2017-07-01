@@ -1,7 +1,6 @@
 var express = require('express');
 var session = require('express-session')
 var app = express()
-var server = require('http').createServer(app)
 var passport = require('passport')
 
 var bodyParser = require("body-parser");
@@ -43,5 +42,5 @@ require('./config/conn.js');
 /*
 - Node JS Application listen at port 3000
 */
-server.listen(process.env.NODE_SERVER_PORT);
-console.log('Server is running at port '+process.env.NODE_SERVER_PORT+'....');
+app.listen(process.env.NODE_SERVER_PORT, '0.0.0.0')
+console.log('Server is running at port '+process.env.NODE_SERVER_PORT+'....')
