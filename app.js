@@ -16,7 +16,7 @@ Helmet helps you secure your Express apps by setting various HTTP headers.
 var helmet = require('helmet');
 app.use(helmet.xssFilter());
 
-require('./config/passport.js')(passport)
+//require('./config/passport.js')(passport)
 
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000*60*24 }}))
 app.use(passport.initialize())
@@ -37,8 +37,8 @@ require('./config/conn.js');
 - Create the base.js file in routes folder
 - Set the base routes to /api/ path
 */
-var base_route = require('./routes/base')
-app.use('/', base_route)
+//var base_route = require('./routes/base')
+//app.use('/', base_route)
 
 /*
 - Node JS Application listen at port 3000
