@@ -18,8 +18,9 @@ var metadb = {};
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// connect to meta db to load nonces and keys for merchants
-var metadb_uri = 'mongodb://'+process.env.DB_HOST+'/'+ 'starcast_db'
+// connect to db
+var metadb_uri = 'mongodb://admin:admin@1234@ds145302.mlab.com:45302/timelogdb'
+//mongodb://<dbuser>:<dbpassword>@ds145302.mlab.com:45302/timelogdb
 
 var mongo_opts = {};
 
@@ -42,13 +43,6 @@ mongoose.connection.on('connected', function () {
   console.log('Connected to ' + db_server + ' DB!');
 });
 
-mongoose.connection.on('disconnected', function () {
-  console.log('Mongoose connection disconnected -> ' + metadb_uri);
-});
-
-mongoose.connection.on('error', function (error) {
-  console.log(error)
-});
-
+mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 mongoose.set('debug', (process.env.MONGOOSE_DEBUG == 'true')? true:false);

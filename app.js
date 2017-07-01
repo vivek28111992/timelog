@@ -17,7 +17,8 @@ app.use(helmet.xssFilter());
 
 //require('./config/passport.js')(passport)
 
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000*60*24 }}))
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000*60*24 }, resave: true,
+    saveUninitialized: true}))
 app.use(passport.initialize())
 app.use(passport.session())
 //require('./routes/routes')(app);
@@ -42,5 +43,5 @@ require('./config/conn.js');
 /*
 - Node JS Application listen at port 3000
 */
-app.listen(process.env.NODE_SERVER_PORT, '0.0.0.0')
-console.log('Server is running at port '+process.env.NODE_SERVER_PORT+'....')
+app.listen(process.env.PORT, '0.0.0.0')
+console.log('Server is running at port '+process.env.PORT+'....')
