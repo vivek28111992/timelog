@@ -12,8 +12,8 @@ var userSchema = new mongoose.Schema({
   gender :{type: String},
   project: [{
     name: {type: String},
-    starttime: {type: Date},
-    endtime: {type: Date}
+    starttime: {type: Number},
+    endtime: {type: Number}
  }]
 },{versionKey:false})
 

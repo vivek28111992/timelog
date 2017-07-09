@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TIME LOG APP</title>
+<style type="text/css">
+#email, #password, #submitbtn {
+    height: 44px;
+    width: 260px;
+    padding: 0 10px;
+    border: 1px solid #9da3a6;
+    background: #fff;
+    text-overflow: ellipsis;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    color: #000;
+    font-size: 14px;
+    font-family: Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    direction: ltr;
+    display: block;
+    margin: 0 auto 12px;
+}
+#submitbtn{cursor: pointer;}
+.headingtext{font-family: Helvetica,Arial,sans-serif;text-align: center;}
+.admin_login{ margin: 10% 0px }
+</style>
+</head>
+<body>
+  <div class="admin_login">
+  	<h3 class="headingtext">Admin Login</h3>
+  	<form action="/admin/login" method="POST">
+  		<div>
+  			<input type="email" name="email" id="email" placeholder="Email" required>
+  		</div>
+  		<div>
+  			<input type="password" name="password" id="password" placeholder="Password" required>
+  		</div>
+  		<div>
+  			<input type="submit" name="submit" id="submitbtn" value="Submit">
+  		</div>
+  	</form>
+  	<div>
+  		<p style="text-align: center; color: red;font-family: Helvetica,Arial,sans-serif"><%= err_msg %></p>
+  	</div>
+  </div>
+</body>
+</html>

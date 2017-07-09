@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
+var userController = require('../controllers/userController')
 
 //load helpers
 var helpers=require('../helpers/utils')
@@ -9,6 +10,7 @@ var user = require('./user');
 var admin = require('./admin');
 
 // A middleware sub-stack shows request info for HTTP request to the /device-registration path
+router.get('/', userController.login)
 router.use('/user', user);
 router.use('/admin', admin);
 

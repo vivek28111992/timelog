@@ -42,11 +42,11 @@ module.exports = function(passport){
 
         // create a new user
         var newUser = User({
-          //"first_name":first_name,
-          //"last_name": last_name,
-          //"profile_pic": profile_img,
-          //"gender": gender,
-          "email":email
+          first_name:first_name,
+          last_name: last_name,
+          profile_pic: profile_img,
+          gender: gender,
+          email:email
         })
 
         // save the user

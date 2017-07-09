@@ -1,18 +1,18 @@
-var express = require('express');
-var session = require('express-session')
-var app = express()
-var passport = require('passport')
+const express = require('express');
+const session = require('express-session')
+const app = express()
+const passport = require('passport')
 
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser")
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json());
-app.set('view engine', 'ejs');
+app.use(bodyParser.json())
+app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 /*
 Helmet helps you secure your Express apps by setting various HTTP headers. 
 */
-var helmet = require('helmet');
+const helmet = require('helmet');
 app.use(helmet.xssFilter());
 
 require('./config/passport.js')(passport)
@@ -36,7 +36,7 @@ require('./config/conn.js')
 - Create the base.js file in routes folder
 - Set the base routes to /api/ path
 */
-var base_route = require('./routes/base')
+const base_route = require('./routes/base')
 app.use('/', base_route)
 
 /*

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TIME LOG APP</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.3.0/octicons.min.css">
+  <link href="//rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.css" rel="stylesheet">
+  <style type="text/css">
+  #successmsg, #errormsg{margin-top: 25px;}
+  </style>
+</head>
+<body>
+<div class="container" ng-app="TimeLogApp" ng-controller="addProjectCrtl" ng-cloak>
+  <h4>View Projects</h4>            
+  <div>
+  	<a ng-href="/admin/logout"><button type="button" class="btn btn-warning">Logout</button></a>
+  </div>
+  <div style="margin: 20px 0px">
+  	<label>Select a user: </label>
+	  <select ng-model="selectedItem" ng-change="update(selectedItem)">
+	  	<option ng-repeat="user in users" value="{{user.email}}">{{user.first_name +" "+user.last_name}}</option>
+	  </select>
+  </div>
+  <form name="viewProjectForm">
+  <table class="table" id="projecttable">
+	   <thead>
+	      <tr>
+	         <th>Project Name</th>
+	         <th>Start Time</th>
+	         <th>End Time</th>
+	         <th>Date</th>
+	      </tr>
+	   </thead>
+	   <tbody id="tablebody">
+	      <tr ng-repeat="item in items">
+	        <td><input type="text" name="name" ng-model = "item.name" required></td>
+	        <td>
+	         	<input class="form-control" moment-picker="item.starttime" format="LT" show-header="false" placeholder="Select a time" ng-model="item.startmoment" ng-model-options="{ updateOn: 'blur' }" required>
+					</td>
+	        <td>
+	        	<input class="form-control" moment-picker="item.endtime" format="LT" show-header="false" placeholder="Select a time" ng-model="item.endmoment" ng-model-options="{ updateOn: 'blur' }" required>
+	        </td>
+	        <td>{{item.date}}</td>
+	      </tr>
+	   </tbody>
+	</table>
+	</form>
+	<div class="alert alert-success" id="successmsg" ng-show="successmsg"></div>
+	<div class="alert alert-warning" id="errormsg" ng-show="errormsg"></div>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment-with-locales.js"></script>
+<script src="//rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.js"></script>
+
+<script>
+angular.module('TimeLogApp', ['moment-picker'])
+	.controller('addProjectCrtl', ['$scope', '$location','$http', function($scope, $location, $http){
+		$scope.successmsg = false;
+		$scope.errormsg = false;
+		$scope.update = function() {
+		  var email = $scope.selectedItem;
+		  if(email != ""){
+		    var arr = [];
+				//get request
+				$http({
+				  method: 'GET',
+				  url: $location.protocol() + "://" + location.host+'/admin/getprojectdetails?email='+email
+				}).then(function successCallback(response) {
+				    // this callback will be called asynchronously
+				    // when the response is available
+				    console.log(response)
+				    var resData = response.data.message;
+				    for (var i = 0; i < resData.length; i++) {
+				    	var obj = {};
+					    angular.forEach(response.data.message[i], function(value, key) {
+							  if(key == 'starttime' || key == 'endtime'){
+							  	var getDateTime = gettime(value);
+							  	var getTime = getDateTime[0];
+							  	var getDate = getDateTime[1];
+							  	obj[(key == 'starttime')? 'starttime':'endtime'] = getTime;
+							  	obj['date'] = getDate;
+							  }
+							  else if(key == 'name'){
+							  	obj['name'] = value;
+							  }
+							  else{
+							  	obj['id'] = value;
+							  }
+							  obj['todaydate'] = getTodayDate();
+							  obj['sid'] = i;
+							}, arr);
+							arr.push(obj);
+				    }
+						$scope.items = arr;
+				  }, function errorCallback(response) {
+				    // called asynchronously if an error occurs
+				    // or server returns response with an error status.
+				})
+		  } 
+		}
+
+		//get request
+		$http({
+		  method: 'GET',
+		  url: $location.protocol() + "://" + location.host+'/admin/getallusers',
+		}).then(function successCallback(response) {
+		    // this callback will be called asynchronously
+		    // when the response is available
+		    var resData = response.data.message;
+		    var userArr = []
+		    for (var i = 0; i < resData.length; i++) {
+		    	userArr.push({"first_name": "Select a user", "email":""})
+		    	var userObj = {};
+			    angular.forEach(response.data.message[i], function(value, key) {
+			    	if(key != '$$hashKey'){
+					  	userObj[key] = value;
+					  	userObj['sid'] = i;
+						}
+					}, userArr);
+					userArr.push(userObj);
+		    }
+				$scope.users = userArr;
+		    //console.log('scope '+JSON.stringify($scope.users))
+		  }, function errorCallback(response) {
+		    // called asynchronously if an error occurs
+		    // or server returns response with an error status.
+		})
+
+		var gettime =  function (time){
+			var time = time * 1000;
+			var dateVal ="/Date("+time+")/";
+			var date = new Date( parseFloat( dateVal.substr(6 )));
+			var restime = date.getHours() + ":" + date.getMinutes();
+			var dd = date.getDate();
+			var mm = date.getMonth()+1; //January is 0!
+			var yyyy = date.getFullYear();
+
+			if(dd<10) {
+			    dd = '0'+dd;
+			} 
+
+			if(mm<10) {
+			    mm = '0'+mm;
+			}
+			var resdate = yyyy + "-" + mm + "-" + dd;
+			return [restime, resdate];
+		}
+
+		var getTodayDate = function(){
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+			var yyyy = today.getFullYear();
+
+			if(dd<10) {
+			    dd = '0'+dd
+			} 
+
+			if(mm<10) {
+			    mm = '0'+mm
+			} 
+
+			today = yyyy + '-' + mm + '-' + dd;
+			return today;
+		}
+	}])
+</script>
+</body>
+</html>

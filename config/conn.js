@@ -38,4 +38,4 @@ mongoose.connect(metadb_uri, (err, database) => {
 
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
-mongoose.set('debug', (process.env.MONGOOSE_DEBUG == 'true')? true:false);
+mongoose.set('debug', (process.env.MONGOOSE_DEBUG == 'false')? true:false);
