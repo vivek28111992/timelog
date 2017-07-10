@@ -67,11 +67,10 @@ angular.module('TimeLogApp', ['moment-picker'])
 				//get request
 				$http({
 				  method: 'GET',
-				  url: $location.protocol() + "://" + location.host+'/admin/getprojectdetails?email='+email
+				  url: '/admin/getprojectdetails?email='+email
 				}).then(function successCallback(response) {
 				    // this callback will be called asynchronously
 				    // when the response is available
-				    console.log(response)
 				    var resData = response.data.message;
 				    for (var i = 0; i < resData.length; i++) {
 				    	var obj = {};
@@ -105,7 +104,7 @@ angular.module('TimeLogApp', ['moment-picker'])
 		//get request
 		$http({
 		  method: 'GET',
-		  url: $location.protocol() + "://" + location.host+'/admin/getallusers',
+		  url: '/admin/getallusers',
 		}).then(function successCallback(response) {
 		    // this callback will be called asynchronously
 		    // when the response is available
