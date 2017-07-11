@@ -24,10 +24,6 @@ var metadb_uri = 'mongodb://admin:admin@ds145892.mlab.com:45892/timelog'
 
 var mongo_opts = {};
 
-if (process.env.NODE_ENV === 'production') {
-    metadb_uri = process.env.MONGO_PROD
-}
-
 var db_server = process.env.DB_ENV || 'primary';
 
 // connected events
