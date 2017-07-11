@@ -26,7 +26,7 @@ var loginadmin = function (req, res){
 	var sess = req.session
 
 	  if (sess.views) {
-	  	res.redirect(process.env.ROOT_URL+'admin/dashboard')
+	  	res.redirect('admin/dashboard')
 	  } else {
 	  	var err_msg = sess.err_msg
 	  	delete req.session.err_msg
