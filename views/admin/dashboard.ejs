@@ -110,8 +110,8 @@ angular.module('TimeLogApp', ['moment-picker'])
 		    // when the response is available
 		    var resData = response.data.message;
 		    var userArr = []
+		    userArr.push({"first_name": "Select a user", "email":""})
 		    for (var i = 0; i < resData.length; i++) {
-		    	userArr.push({"first_name": "Select a user", "email":""})
 		    	var userObj = {};
 			    angular.forEach(response.data.message[i], function(value, key) {
 			    	if(key != '$$hashKey'){
